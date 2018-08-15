@@ -1,0 +1,45 @@
+{
+    "language": "de",
+    "pipeline": [
+        "rasa_nlu.utils.spacy_utils.SpacyNLP",
+        "rasa_nlu.tokenizers.spacy_tokenizer.SpacyTokenizer",
+        "rasa_nlu.extractors.crf_entity_extractor.CRFEntityExtractor"
+    ],
+    "training_data": "training_data.json",
+    "spacy_model_name": "de",
+    "entity_extractor_crf": {
+        "model_file": "crf_model.pkl",
+        "crf_features": [
+            [
+                "low",
+                "title",
+                "upper",
+                "pos",
+                "pos2"
+            ],
+            [
+                "bias",
+                "low",
+                "word3",
+                "word2",
+                "upper",
+                "title",
+                "digit",
+                "pos",
+                "pos2",
+                "pattern"
+            ],
+            [
+                "low",
+                "title",
+                "upper",
+                "pos",
+                "pos2"
+            ]
+        ],
+        "BILOU_flag": true,
+        "version": 1
+    },
+    "trained_at": "20180811-143652",
+    "rasa_nlu_version": "0.10.6"
+}
