@@ -17,6 +17,7 @@ class NIFDocument:
     
     def addContent(self, cont):
         self.nifContent.append(cont)
+    #return nif docuemt as a string
     def get_nif_string(self):
         string=""
         string+=self.pref_rdf+'\n'
@@ -31,7 +32,7 @@ class NIFDocument:
    
 
 
-
+    #get NIF Cotnet with full text
     def get_referenced_contex_id(self):
         i=0
         while i<len(self.nifContent):
@@ -39,13 +40,7 @@ class NIFDocument:
                 return i
             i=i+1
         return None
-    def get_sorted_cont_indexes(self):
-        dictionary=[]
-        for cont in self.nifContent:
-            if cont.is_string is None:
-                dictionary.append({'start':cont.begin_index , 'end':cont.end_index})
-        return sorted(dictionary,key=lambda i: i['start'])
-     
+#transform String in nif document
 def nifStringToNifDocument(NIFString):
     nifStatements=NIFString.split("\n")
     document=NIFDocument()

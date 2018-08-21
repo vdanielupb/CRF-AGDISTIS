@@ -27,7 +27,7 @@ agdistis_url=config.get('agdistis','agdistis_url')
 interpreter = Interpreter.load(config.get('rasa','rasa_model'), rasa_conf)
 host=config.get('flask','host')
 
-
+#adds enitites from rasa to a nif-document
 def add_nif_entities(reference_context,base_uri,entities,doc):
     for ent in entities:
         nif_content=NIFContent.NIFContent(base_uri+'#'+str(ent['start'])+','+str(ent['end']))
@@ -38,11 +38,12 @@ def add_nif_entities(reference_context,base_uri,entities,doc):
         doc.addContent(nif_content)
     return doc
                                
-
+#webservice for entity recognition
 @app.route('/nifEntityRecognition/', methods=['POST'])
 def annotate_nif_string():
     string=request.data.decode()
     doc=NIFDocument.nifStringToNifDocument(string)
+    #replace of comma with whitespace for tokenizer
     res=interpreter.parse(doc.nifContent[0].is_string.replace(',',' ').replace('"',' ').replace('\\',''))
     base_uri=doc.nifContent[0].uri[0:doc.nifContent[0].uri.find('#')]
     app.logger.debug(res)
@@ -52,12 +53,13 @@ def annotate_nif_string():
     resp.headers['content'] = 'application/x-turtle'
     
     return resp
-    
+#webservice for recognition and liking
 @app.route('/nifa2kb/', methods=['POST'])
 def annotate_nif_string_Linking():
     string=request.data.decode()
     doc=NIFDocument.nifStringToNifDocument(string)
     app.logger.debug(doc.nifContent[int(doc.get_referenced_contex_id())].is_string)
+    #replace of comma with whitespace for tokenizer
     res=interpreter.parse(doc.nifContent[int(doc.get_referenced_contex_id())].is_string.replace(',',' ').replace('"',' ').replace('\\',''))
     base_uri=doc.nifContent[0].uri[0:doc.nifContent[0].uri.find('#')]
     app.logger.debug(res)
@@ -65,6 +67,7 @@ def annotate_nif_string_Linking():
     #doc.nifContent[int(doc.get_referenced_contex_id())].is_string=doc.nifContent[int(doc.get_referenced_contex_id())].is_string.replace('\\','\\\\')
     ag_string=doc.get_nif_string()
     app.logger.debug(ag_string)
+    #get links from agdsitis
     resp=requests.post(agdistis_url,ag_string.encode('utf-8'))
     app.logger.debug(resp.content.decode())
     
@@ -74,11 +77,14 @@ def annotate_nif_string_Linking():
     app.logger.debug(resp)
     
     return resp
-    
+
+#tool demo
 @app.route('/')                
 def index():
     return render_template(
             'demo.html')
+    
+#required for Ajax request of demo template
 @app.route('/getEntities',methods=['POST'])
 def get_entities_demo():
     text = request.form.get('text')

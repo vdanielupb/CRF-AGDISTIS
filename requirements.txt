@@ -1,0 +1,3 @@
+#app
+rasa_nlu==0.10.6
+flask==0.12.2

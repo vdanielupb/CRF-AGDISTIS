@@ -4,7 +4,7 @@ Created on Tue Apr  3 11:24:01 2018
 
 @author: Daniel
 """
-
+#script for learning a model
 import configparser
 from rasa_nlu.converters import load_data
 from rasa_nlu.config import RasaNLUConfig

@@ -4,6 +4,7 @@ Created on Tue May 22 10:35:31 2018
 
 @author: Daniel
 """
+#Script for annotating a whole file
 import requests
 import nif.NIFDocument as NIFDocument
 import nif.NIFContent as NIFContent
@@ -30,7 +31,7 @@ agdistis_url=config.get('agdistis','agdistis_url')
 interpreter = Interpreter.load(config.get('rasa','rasa_model'), rasa_config)
 
 
-#file = request.files['file']
+
 with open(config.get('files','file_to_annotate'),'r',encoding='utf8') as f:
         content = f.readlines()
 doc=NIFDocument.NIFDocument()
@@ -44,7 +45,7 @@ for line in content:
     nif_content.end_index=len(line)
     doc_with_annotations=NIFDocument.NIFDocument()
     doc_with_annotations.addContent(nif_content)
-    #line=str(line.encode('utf-8'))
+    #replacement of commas with whitespaces for tokenizer
     res=interpreter.parse(line.replace(',',' ').replace('"',' ').replace('\\','').replace('\n',''))
     doc_with_annotations=add_nif_entities(nif_content.uri,base_uri,res['entities'],doc_with_annotations)
     ag_string=doc_with_annotations.get_nif_string()    
