@@ -49,7 +49,6 @@ Configurations can be set in the file conf/conf.cnf
 
 * required settings:
   * rasa_config_file: the config for rasa nlu (example config can be found in the folder conf)
-  * rasa_model_directory: folder to save the new model
   * rasa_model: directory of the model to be used
   * host: The URL/IP where the webservice should be hosted
   * agdistis_url: location of the AGDISTIS Webservice
@@ -59,6 +58,5 @@ Configurations can be set in the file conf/conf.cnf
 
 * required settings:
   * rasa_config_file: the config for rasa nlu (example config can be found in the folder conf)
-  * rasa_model_directory: folder to save the new model
   * rasa_model: directory of the model to be used
   * agdistis_url: location of the AGDISTIS Webservice
